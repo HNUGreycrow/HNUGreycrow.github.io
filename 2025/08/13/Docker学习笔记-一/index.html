@@ -19,23 +19,27 @@
   <meta name="author" content="HNUGreycrow">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="Docker学习笔记(一)：Docker常用命令整理了 Docker 核心命令的用法，从服务管理到容器操作，方便后续复习查阅。 一、Docker服务基础操作（守护进程管理）1.1 服务启停控制 启动：systemctl start docker✅ 核心功能：启动Docker守护进程（dockerd），初始化镜像&#x2F;容器管理环境⚠️ 注意：启动失败用journalctl -u docker查">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://hnugreycrow.github.io/2025/08/09/hello-world/index.html">
+<meta property="og:title" content="Docker学习笔记(一)：Docker常用命令">
+<meta property="og:url" content="https://hnugreycrow.github.io/2025/08/13/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/index.html">
 <meta property="og:site_name" content="HNUGreycrow Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="Docker学习笔记(一)：Docker常用命令整理了 Docker 核心命令的用法，从服务管理到容器操作，方便后续复习查阅。 一、Docker服务基础操作（守护进程管理）1.1 服务启停控制 启动：systemctl start docker✅ 核心功能：启动Docker守护进程（dockerd），初始化镜像&#x2F;容器管理环境⚠️ 注意：启动失败用journalctl -u docker查">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-08-09T15:30:53.738Z">
-<meta property="article:modified_time" content="2025-08-13T02:33:11.891Z">
+<meta property="og:image" content="https://hnugreycrow.github.io/img/docker.png">
+<meta property="article:published_time" content="2025-08-13T12:25:40.000Z">
+<meta property="article:modified_time" content="2025-08-14T07:09:29.722Z">
 <meta property="article:author" content="HNUGreycrow">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="学习笔记">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hnugreycrow.github.io/img/docker.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Hello World - HNUGreycrow Blog</title>
+  <title>Docker学习笔记(一)：Docker常用命令 - HNUGreycrow Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -195,13 +199,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/home.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/docker.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="Docker学习笔记(一)：Docker常用命令"></span>
           
         </div>
 
@@ -212,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-08-09 23:30" pubdate>
-          2025年8月9日 晚上
+        <time datetime="2025-08-13 20:25" pubdate>
+          2025年8月13日 晚上
         </time>
       </span>
     
@@ -224,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          18 字
+          1.1k 字
         
       </span>
     
@@ -235,7 +239,7 @@
         
         
         
-          1 分钟
+          10 分钟
         
       </span>
     
@@ -281,24 +285,101 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">Docker学习笔记(一)：Docker常用命令</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <h1 id="Docker学习笔记-一-：Docker常用命令"><a href="#Docker学习笔记-一-：Docker常用命令" class="headerlink" title="Docker学习笔记(一)：Docker常用命令"></a>Docker学习笔记(一)：Docker常用命令</h1><p>整理了 Docker 核心命令的用法，从服务管理到容器操作，方便后续复习查阅。</p>
+<h2 id="一、Docker服务基础操作（守护进程管理）"><a href="#一、Docker服务基础操作（守护进程管理）" class="headerlink" title="一、Docker服务基础操作（守护进程管理）"></a>一、Docker服务基础操作（守护进程管理）</h2><h3 id="1-1-服务启停控制"><a href="#1-1-服务启停控制" class="headerlink" title="1.1 服务启停控制"></a>1.1 服务启停控制</h3><ul>
+<li>启动：<code>systemctl start docker</code><br>✅ 核心功能：启动Docker守护进程（dockerd），初始化镜像&#x2F;容器管理环境<br>⚠️ 注意：启动失败用<code>journalctl -u docker</code>查日志  </li>
+<li>停止：<code>systemctl stop docker</code><br>✅ 核心功能：终止守护进程及所有运行中容器<br>⚠️ 注意：先手动停止重要容器，避免数据未持久化  </li>
+<li>重启：<code>systemctl restart docker</code><br>✅ 核心场景：修改配置文件（如<code>/etc/docker/daemon.json</code>）后生效</li>
+</ul>
+<h3 id="1-2-服务状态查询"><a href="#1-2-服务状态查询" class="headerlink" title="1.2 服务状态查询"></a>1.2 服务状态查询</h3><ul>
+<li>命令：<code>systemctl status docker</code><br>✅ 核心功能：查看服务运行状态及最近日志<br>🔍 状态解读：  <ul>
+<li>绿色<code>active (running)</code>：正常运行  </li>
+<li>红色<code>inactive (dead)</code>：已停止</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、镜像操作命令（Image）"><a href="#二、镜像操作命令（Image）" class="headerlink" title="二、镜像操作命令（Image）"></a>二、镜像操作命令（Image）</h2><h3 id="2-1-镜像获取与搜索"><a href="#2-1-镜像获取与搜索" class="headerlink" title="2.1 镜像获取与搜索"></a>2.1 镜像获取与搜索</h3><ul>
+<li><p>拉取镜像：<code>docker pull &lt;镜像名:标签&gt;</code><br>✅ 核心功能：从远程仓库下载镜像（默认Docker Hub）<br>🔍 格式示例：<code>docker pull mysql:8.0</code>（指定版本，推荐生产环境使用）<br>⚠️ 注意：<code>latest</code>标签可能随时间变化，避免生产环境直接使用  </p>
+</li>
+<li><p>搜索镜像：<code>docker search &lt;关键词&gt;</code><br>✅ 核心功能：在Docker Hub检索镜像<br>🔍 结果解读：<code>OFFICIAL=OK</code>为官方镜像（安全性更高）<br>❌ 常见问题：网络超时（<code>i/o timeout</code>）→ 需配置国内镜像源</p>
+</li>
+</ul>
+<h3 id="2-2-镜像管理与查询"><a href="#2-2-镜像管理与查询" class="headerlink" title="2.2 镜像管理与查询"></a>2.2 镜像管理与查询</h3><ul>
+<li><p>查看本地镜像：<code>docker images</code><br>✅ 核心功能：列出本地所有镜像信息<br>🔍 输出解读：<code>REPOSITORY</code>（仓库名）、<code>TAG</code>（版本）、<code>IMAGE ID</code>（唯一标识）<br>⚡ 快捷用法：<code>docker images -q</code>（仅输出镜像ID，用于批量操作）  </p>
+</li>
+<li><p>查看镜像详情：<code>docker inspect &lt;镜像ID/名称&gt;</code><br>✅ 核心功能：获取镜像完整元数据（构建历史、环境变量等）</p>
+</li>
+</ul>
+<h3 id="2-3-镜像删除"><a href="#2-3-镜像删除" class="headerlink" title="2.3 镜像删除"></a>2.3 镜像删除</h3><ul>
+<li>命令：<code>docker rmi &lt;镜像ID/名称&gt;</code><br>✅ 核心功能：删除本地镜像<br>⚠️ 注意：若镜像被容器引用（即使容器已停止），需先删除容器<br>⚡ 强制删除：<code>docker rmi -f &lt;镜像ID&gt;</code>（不推荐，可能残留数据）</li>
+</ul>
+<h2 id="三、容器操作命令（Container）"><a href="#三、容器操作命令（Container）" class="headerlink" title="三、容器操作命令（Container）"></a>三、容器操作命令（Container）</h2><h3 id="3-1-容器创建与启动"><a href="#3-1-容器创建与启动" class="headerlink" title="3.1 容器创建与启动"></a>3.1 容器创建与启动</h3><ul>
+<li><p>新建并启动：<code>docker run [参数] &lt;镜像名&gt;</code><br>✅ 核心功能：基于镜像创建并启动容器（&#x3D; 新建+启动）<br>⚡ 必学参数：  </p>
+<ul>
+<li><code>-d</code>：后台运行（不占用终端）  </li>
+<li><code>-p 主机端口:容器端口</code>：端口映射（如<code>-p 8080:80</code>）  </li>
+<li><code>--name &lt;名称&gt;</code>：指定容器名（避免随机名称）  </li>
+<li><code>-it</code>：交互式终端（如<code>docker run -it ubuntu /bin/bash</code>）</li>
+</ul>
+</li>
+<li><p>启动已停止容器：<code>docker start &lt;容器ID/名称&gt;</code><br>✅ 核心区别：<code>start</code>用于“启动已存在容器”，<code>run</code>用于“新建+启动”</p>
+</li>
+</ul>
+<h3 id="3-2-容器查看与进入"><a href="#3-2-容器查看与进入" class="headerlink" title="3.2 容器查看与进入"></a>3.2 容器查看与进入</h3><ul>
+<li><p>查看容器列表：  </p>
+<ul>
+<li><code>docker ps</code>：查看运行中容器  </li>
+<li><code>docker ps -a</code>：查看所有容器（含已停止）  </li>
+<li><code>docker ps -q</code>：仅输出容器ID（批量操作如<code>docker stop $(docker ps -q)</code>）</li>
+</ul>
+</li>
+<li><p>进入运行中容器：<code>docker exec -it &lt;容器ID/名称&gt; &lt;终端命令&gt;</code><br>✅ 示例：<code>docker exec -it my-nginx /bin/bash</code>（进入bash终端）<br>⚠️ 注意：需容器处于运行状态，<code>-it</code>参数缺一不可（保持交互）</p>
+</li>
+</ul>
+<h3 id="3-3-容器停止与销毁"><a href="#3-3-容器停止与销毁" class="headerlink" title="3.3 容器停止与销毁"></a>3.3 容器停止与销毁</h3><ul>
+<li><p>停止容器：<code>docker stop &lt;容器ID/名称&gt;</code><br>✅ 核心功能：优雅停止（发送SIGTERM信号，允许保存数据）<br>⚡ 强制停止：<code>docker kill &lt;容器ID&gt;</code>（发送SIGKILL，紧急情况使用）  </p>
+</li>
+<li><p>删除容器：<code>docker rm &lt;容器ID/名称&gt;</code><br>✅ 核心功能：删除已停止容器<br>⚠️ 注意：运行中容器需先停止，或用<code>docker rm -f &lt;容器ID&gt;</code>强制删除（谨慎使用）</p>
+</li>
+</ul>
+<h3 id="3-4-容器详情查询"><a href="#3-4-容器详情查询" class="headerlink" title="3.4 容器详情查询"></a>3.4 容器详情查询</h3><ul>
+<li>命令：<code>docker inspect &lt;容器ID/名称&gt;</code><br>✅ 核心用途：查看IP地址、挂载路径等关键信息（如<code>NetworkSettings.IPAddress</code>）</li>
+</ul>
+<h2 id="四、常见问题与易错点"><a href="#四、常见问题与易错点" class="headerlink" title="四、常见问题与易错点"></a>四、常见问题与易错点</h2><h3 id="4-1-网络问题"><a href="#4-1-网络问题" class="headerlink" title="4.1 网络问题"></a>4.1 网络问题</h3><ul>
+<li>现象：拉取&#x2F;搜索镜像超时（<code>i/o timeout</code>）  </li>
+<li>解决：配置国内镜像源（如阿里云、网易），修改<code>/etc/docker/daemon.json</code>后重启服务</li>
+</ul>
+<h3 id="4-2-命令混淆"><a href="#4-2-命令混淆" class="headerlink" title="4.2 命令混淆"></a>4.2 命令混淆</h3><table>
+<thead>
+<tr>
+<th>易混淆命令</th>
+<th>核心区别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docker run</code> vs <code>docker start</code></td>
+<td><code>run</code>&#x3D;新建+启动；<code>start</code>&#x3D;启动已存在容器</td>
+</tr>
+<tr>
+<td><code>docker stop</code> vs <code>docker kill</code></td>
+<td><code>stop</code>优雅停止；<code>kill</code>强制终止</td>
+</tr>
+<tr>
+<td><code>docker rmi</code> vs <code>docker rm</code></td>
+<td><code>rmi</code>删镜像；<code>rm</code>删容器</td>
+</tr>
+</tbody></table>
+<h2 id="五、学习小结"><a href="#五、学习小结" class="headerlink" title="五、学习小结"></a>五、学习小结</h2><h3 id="核心逻辑链"><a href="#核心逻辑链" class="headerlink" title="核心逻辑链"></a>核心逻辑链</h3><p>服务（daemon）→ 镜像（模板）→ 容器（运行实例），操作需按“启动服务→管理镜像→操作容器”递进  </p>
+<h3 id="后续重点"><a href="#后续重点" class="headerlink" title="后续重点"></a>后续重点</h3><ol>
+<li>配置国内镜像源，解决网络问题  </li>
+<li>学习数据卷（<code>volume</code>），解决容器数据持久化  </li>
+<li>实战部署（Nginx&#x2F;MySQL），练习命令组合使用</li>
+</ol>
 
                 
               </div>
@@ -307,6 +388,43 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/" class="category-chain-item">容器技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/Docker/" class="category-chain-item">Docker</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Docker/" class="print-no-link">#Docker</a>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
   
 </div>
 
@@ -316,8 +434,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>https://hnugreycrow.github.io/2025/08/09/hello-world/</div>
+      <div>Docker学习笔记(一)：Docker常用命令</div>
+      <div>https://hnugreycrow.github.io/2025/08/13/Docker学习笔记-一/</div>
     </div>
     <div class="license-meta">
       
@@ -329,7 +447,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年8月9日</div>
+          <div>2025年8月13日</div>
         </div>
       
       
@@ -361,15 +479,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" title="解决SpringBoot中Lombok注解失效的那些坑">
+                      <a href="/2025/08/14/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C/" title="Docker学习笔记(二)：容器数据卷">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">解决SpringBoot中Lombok注解失效的那些坑</span>
+                        <span class="hidden-mobile">Docker学习笔记(二)：容器数据卷</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" title="解决SpringBoot中Lombok注解失效的那些坑">
+                        <span class="hidden-mobile">解决SpringBoot中Lombok注解失效的那些坑</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

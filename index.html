@@ -63,7 +63,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -226,18 +226,100 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2025/08/14/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C/" target="_self">
+          <img src="/img/docker.png" srcset="/img/loading.gif" lazyload alt="Docker学习笔记(二)：容器数据卷">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/08/13/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-          Docker常用命令
+        <a href="/2025/08/14/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C/" target="_self">
+          Docker学习笔记(二)：容器数据卷
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/13/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
+      <a class="index-excerpt " href="/2025/08/14/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C/" target="_self">
         <div>
-          Docker常用命令学习笔记整理了 Docker 核心命令的用法，从服务管理到容器操作，方便后续复习查阅。 服务命令启动Docker服务1systemctl start docker  功能：启动 Docker 守护进程（dockerd），使 Docker 服务进入运行状态。 说明：执行后 Docker 服务将在后台运行，支持后续的镜像拉取、容器创建等操作。若启动失败，可通过journalctl
+          Docker学习笔记(二)：容器数据卷一、数据卷核心概念1.1 定义数据卷是宿主机文件系统中的一个目录或文件，通过挂载机制与容器内指定路径关联，实现宿主机与容器的双向数据共享。 1.2 本质 类似Linux的mount命令，容器访问挂载路径时实际操作的是宿主机数据卷 数据卷独立于容器生命周期，容器删除后数据仍保存在宿主机  二、数据卷的三大核心作用数据卷的设计初衷，就是为了解决容器与数据分离的问题
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-08-14 11:06" pubdate>
+              2025-08-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/" class="category-chain-item">容器技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/Docker/" class="category-chain-item">Docker</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Docker/">#Docker</a>
+            
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2025/08/13/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/" target="_self">
+          <img src="/img/docker.png" srcset="/img/loading.gif" lazyload alt="Docker学习笔记(一)：Docker常用命令">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/08/13/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/" target="_self">
+          Docker学习笔记(一)：Docker常用命令
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2025/08/13/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/" target="_self">
+        <div>
+          Docker学习笔记(一)：Docker常用命令整理了 Docker 核心命令的用法，从服务管理到容器操作，方便后续复习查阅。 一、Docker服务基础操作（守护进程管理）1.1 服务启停控制 启动：systemctl start docker✅ 核心功能：启动Docker守护进程（dockerd），初始化镜像&#x2F;容器管理环境⚠️ 注意：启动失败用journalctl -u docker查
         </div>
       </a>
 
@@ -296,7 +378,13 @@
   <div class="row mx-auto index-card">
     
     
-    <article class="col-12 col-md-12 mx-auto index-info">
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" target="_self">
+          <img src="/img/solution.png" srcset="/img/loading.gif" lazyload alt="解决SpringBoot中Lombok注解失效的那些坑">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
         <a href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" target="_self">
@@ -305,7 +393,7 @@
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" target="_self">
+      <a class="index-excerpt " href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" target="_self">
         <div>
           在 SpringBoot 项目开发中，Lombok 注解突然失效是一个很常见的问题，表现为明明添加了 @Data 等注解，却在编译时出现 “找不到符号”（如缺失 getter&#x2F;setter 方法）的错误。本文记录了我在项目中遇到该问题的排查过程，分析了 Lombok 注解失效与 Maven 编译插件（maven-compiler-plugin）配置、版本管理之间的关系，并总结了可行的解决
         </div>
