@@ -100,11 +100,9 @@
     
     <categories>
       
-      <category>后端</category>
+      <category>问题解决</category>
       
       <category>SpringBoot</category>
-      
-      <category>问题解决</category>
       
     </categories>
     
@@ -114,6 +112,8 @@
       <tag>SpringBoot</tag>
       
       <tag>Lombok</tag>
+      
+      <tag>Bug</tag>
       
     </tags>
     
