@@ -1,0 +1,913 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="HNUGreycrow">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在 Vue 组件开发中，属性传递是核心场景之一。props 适用于明确声明的属性，但当需要灵活传递未声明的属性或事件、封装第三方组件时，透传 Attributes 成为更高效的解决方案。 一、什么是透传 Attributes？官方定义：透传 Attributes 指传递给组件但未被声明为 props 或 emits 的 attribute 或 v-on 事件监听器，最常见的包括 class、sty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3 笔记：透传 Attributes">
+<meta property="og:url" content="https://hnugreycrow.github.io/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/index.html">
+<meta property="og:site_name" content="HNUGreycrow Blog">
+<meta property="og:description" content="在 Vue 组件开发中，属性传递是核心场景之一。props 适用于明确声明的属性，但当需要灵活传递未声明的属性或事件、封装第三方组件时，透传 Attributes 成为更高效的解决方案。 一、什么是透传 Attributes？官方定义：透传 Attributes 指传递给组件但未被声明为 props 或 emits 的 attribute 或 v-on 事件监听器，最常见的包括 class、sty">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hnugreycrow.github.io/img/vue.png">
+<meta property="article:published_time" content="2025-08-22T15:51:12.000Z">
+<meta property="article:modified_time" content="2025-08-23T04:02:13.464Z">
+<meta property="article:author" content="HNUGreycrow">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hnugreycrow.github.io/img/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Vue3 笔记：透传 Attributes - HNUGreycrow Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HNUGreycrow Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/qishi.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Vue3 笔记：透传 Attributes"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-22 23:51" pubdate>
+          2025年8月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Vue"
+        id="heading-2d8ec58babcec05d3fe8f712968de749" role="tab" data-toggle="collapse" href="#collapse-2d8ec58babcec05d3fe8f712968de749"
+        aria-expanded="true"
+      >
+        Vue
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-2d8ec58babcec05d3fe8f712968de749"
+           role="tabpanel" aria-labelledby="heading-2d8ec58babcec05d3fe8f712968de749">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/08/16/Vue3-%E5%93%8D%E5%BA%94%E5%BC%8F%E5%9F%BA%E7%A1%80/" title="Vue3 笔记：响应式基础"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Vue3 笔记：响应式基础</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/18/Vue3-%E6%B7%B1%E5%85%A5%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F/" title="Vue3 笔记：深入响应式系统"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Vue3 笔记：深入响应式系统</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/" title="Vue3 笔记：透传 Attributes"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Vue3 笔记：透传 Attributes</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Vue3 笔记：透传 Attributes</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月23日 中午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在 Vue 组件开发中，属性传递是核心场景之一。props 适用于明确声明的属性，但当需要灵活传递未声明的属性或事件、封装第三方组件时，<strong>透传 Attributes</strong> 成为更高效的解决方案。</p>
+<h2 id="一、什么是透传-Attributes？"><a href="#一、什么是透传-Attributes？" class="headerlink" title="一、什么是透传 Attributes？"></a>一、什么是透传 Attributes？</h2><p>官方定义：<strong>透传 Attributes 指传递给组件但未被声明为 props 或 emits 的 attribute 或 v-on 事件监听器</strong>，最常见的包括 <code>class</code>、<code>style</code>、<code>id</code> 以及自定义事件等。</p>
+<p>在 Vue3 中，透传 Attributes 会被收集到组件实例的 <code>$attrs</code> 中，可通过 <code>useAttrs()</code>（script setup）或 <code>this.$attrs</code>（选项式 API）访问。</p>
+<h3 id="访问-attrs-的两种方式"><a href="#访问-attrs-的两种方式" class="headerlink" title="访问 $attrs 的两种方式"></a>访问 $attrs 的两种方式</h3><ol>
+<li><p>script setup 中：useAttrs ()</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; useAttrs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>选项式 API 中：this.$attrs</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">$attrs</span>); <span class="hljs-comment">// 直接通过实例访问</span><br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>官方明确指出，<code>$attrs</code> <strong>不是响应式对象</strong>（出于性能优化考虑）。虽然它会随着父组件传递的属性变化而更新（始终反映最新状态），但无法通过 <code>watch</code> 或 <code>watchEffect</code> 直接监听其变化。</p>
+<p>例如，以下代码无法触发监听逻辑：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; useAttrs, watch &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();<br><br><span class="hljs-comment">// 无效：无法监听 $attrs 的变化</span><br><span class="hljs-title function_">watch</span>(attrs, <span class="hljs-function">(<span class="hljs-params">newVal</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;attrs 变化了&#x27;</span>, newVal);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>若需要在 <code>$attrs</code> 变化时执行副作用，官方推荐两种方案：</p>
+<ol>
+<li><p><strong>使用 props</strong>：将需要响应的属性通过 <code>defineProps</code> 声明（props 是响应式的）；</p>
+</li>
+<li><p>使用 <code>onUpdated</code> 钩子：在组件更新时（<code>$attrs</code>已同步最新值）执行逻辑：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; useAttrs, onUpdated &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();<br><br><span class="hljs-title function_">onUpdated</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// 每次更新时获取最新的 attrs</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;最新的 attrs&#x27;</span>, attrs);<br>&#125;);<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="二、透传-Attributes-的基础特性"><a href="#二、透传-Attributes-的基础特性" class="headerlink" title="二、透传 Attributes 的基础特性"></a>二、透传 Attributes 的基础特性</h2><h3 id="1-自动收集未声明属性"><a href="#1-自动收集未声明属性" class="headerlink" title="1. 自动收集未声明属性"></a>1. 自动收集未声明属性</h3><p>父组件传递的属性中，未被子组件通过 <code>defineProps</code> 声明的部分，会自动归入 <code>$attrs</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 父组件 Parent.vue --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;user-card&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;card&quot;</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;用户信息&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 子组件 Child.vue --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; useAttrs, onMounted &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 仅声明 title 为 props</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> props = <span class="hljs-title function_">defineProps</span>([<span class="hljs-string">&#x27;title&#x27;</span>]);</span><br><span class="language-javascript"><span class="hljs-comment">// 获取透传的剩余属性</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(attrs); <span class="hljs-comment">// &#123; id: &#x27;user-card&#x27;, class: &#x27;card&#x27; &#125;</span></span><br><span class="language-javascript">&#125;);</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-自动绑定到根元素"><a href="#2-自动绑定到根元素" class="headerlink" title="2. 自动绑定到根元素"></a>2. 自动绑定到根元素</h3><p>默认情况下，子组件的 <strong>根元素会自动绑定 <code>$attrs</code></strong>。上述示例中，Child 组件的根元素 <code>&lt;div&gt;</code> 会被渲染为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;user-card&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;card&quot;</span>&gt;</span>用户信息<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这一特性在封装基础组件时尤为实用，无需手动转发属性。</p>
+<h3 id="3-class-与-style-的特殊处理"><a href="#3-class-与-style-的特殊处理" class="headerlink" title="3. class 与 style 的特殊处理"></a>3. class 与 style 的特殊处理</h3><p><code>class</code>和<code>style</code>是特殊的透传Attributes：当子组件根元素已有自身的<code>class</code>和<code>style</code>时，会与透传的<code>class</code>和<code>style</code>自动合并，而非覆盖：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 子组件 Child.vue --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 根元素自身有 class --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;base&quot;</span>&gt;</span>用户信息<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 父组件传递 class=&quot;card&quot; 后，渲染结果： --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;base card&quot;</span>&gt;</span>用户信息<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="三、控制透传行为：inheritAttrs-选项"><a href="#三、控制透传行为：inheritAttrs-选项" class="headerlink" title="三、控制透传行为：inheritAttrs 选项"></a>三、控制透传行为：inheritAttrs 选项</h2><p>默认情况下，<code>$attrs</code> 会自动绑定到根元素。若需自定义绑定目标（如非根元素），可通过 <code>defineOptions</code> 设置 <code>inheritAttrs: false</code> 禁用自动绑定，再手动绑定 <code>$attrs</code>。</p>
+<h3 id="1-绑定到非根元素"><a href="#1-绑定到非根元素" class="headerlink" title="1. 绑定到非根元素"></a>1. 绑定到非根元素</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 子组件 Child.vue --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;wrapper&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 手动将 $attrs 绑定到内部元素 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;content&quot;</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span>&gt;</span><br>      &#123;&#123; title &#125;&#125;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; useAttrs, defineOptions &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 禁用根元素自动绑定</span></span><br><span class="language-javascript"><span class="hljs-title function_">defineOptions</span>(&#123; <span class="hljs-attr">inheritAttrs</span>: <span class="hljs-literal">false</span> &#125;);</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> props = <span class="hljs-title function_">defineProps</span>([<span class="hljs-string">&#x27;title&#x27;</span>]);</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>(); <span class="hljs-comment">// 仍可访问 $attrs，仅禁用自动绑定</span></span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>渲染结果：<code>id</code> 和 <code>class</code> 仅绑定到 <code>.content</code>，而非根元素 <code>.wrapper</code>。</p>
+<h3 id="2-多根节点组件的强制手动绑定"><a href="#2-多根节点组件的强制手动绑定" class="headerlink" title="2. 多根节点组件的强制手动绑定"></a>2. 多根节点组件的强制手动绑定</h3><p>Vue3 支持多根节点组件，但此时 <strong><code>$attrs</code> 不会自动绑定到任何节点</strong>，必须手动指定绑定位置，否则会触发警告：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 多根节点组件（正确示例） --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>节点1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 手动绑定 $attrs 到需要的节点 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span>&gt;</span>节点2（接收透传属性）<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 若未手动绑定，会触发警告：</span></span><br><span class="language-javascript"><span class="hljs-comment">// [Vue warn]: Extraneous non-props attributes were passed but could not be inherited</span></span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="四、嵌套组件的透传"><a href="#四、嵌套组件的透传" class="headerlink" title="四、嵌套组件的透传"></a>四、嵌套组件的透传</h2><p>当组件层级超过两层（如 Parent → Middle → Child）时，<code>$attrs</code> <strong>不会自动传递给深层子组件</strong>，需中间组件手动转发。</p>
+<h3 id="1-未转发导致的属性丢失"><a href="#1-未转发导致的属性丢失" class="headerlink" title="1. 未转发导致的属性丢失"></a>1. 未转发导致的属性丢失</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 三层结构：Parent → Middle → Child --&gt;</span><br><span class="hljs-comment">&lt;!-- Parent.vue 传递属性：id、class、title --&gt;</span><br><span class="hljs-comment">&lt;!-- Middle.vue（未转发 $attrs） --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>中间组件<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> /&gt;</span> <span class="hljs-comment">&lt;!-- 未绑定 $attrs，Child 无法接收属性 --&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>此时 Child 组件的 <code>$attrs</code> 为空，无法获取 Parent 传递的属性。</p>
+<h3 id="2-手动转发的两种方式"><a href="#2-手动转发的两种方式" class="headerlink" title="2. 手动转发的两种方式"></a>2. 手动转发的两种方式</h3><h4 id="（1）全量转发（推荐）"><a href="#（1）全量转发（推荐）" class="headerlink" title="（1）全量转发（推荐）"></a>（1）全量转发（推荐）</h4><p>通过 <code>v-bind=&quot;$attrs&quot;</code> 将中间组件的 <code>$attrs</code> 全部转发给子组件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- Middle.vue（全量转发） --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>中间组件<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span> /&gt;</span> <span class="hljs-comment">&lt;!-- 关键：转发所有透传属性 --&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（2）选择性转发"><a href="#（2）选择性转发" class="headerlink" title="（2）选择性转发"></a>（2）选择性转发</h4><p>如需过滤或加工属性，可从 <code>$attrs</code> 中提取指定属性转发：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- Middle.vue（选择性转发） --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>中间组件<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> </span><br><span class="hljs-tag">      <span class="hljs-attr">:title</span>=<span class="hljs-string">&quot;attrs.title?.toUpperCase()&quot;</span> &lt;!<span class="hljs-attr">--</span> <span class="hljs-attr">加工后转发</span> <span class="hljs-attr">--</span>&gt;</span><br>      :desc=&quot;attrs.desc&quot; <br>    /&gt;<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; useAttrs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-中间组件声明-props-后的透传规则"><a href="#3-中间组件声明-props-后的透传规则" class="headerlink" title="3. 中间组件声明 props 后的透传规则"></a>3. 中间组件声明 props 后的透传规则</h3><p>若中间组件通过 <code>defineProps</code> 声明了部分属性，这些属性会从 <code>$attrs</code> 中移除，转发时仅包含未声明的剩余属性：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- Middle.vue（声明了 title 为 props） --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> props = <span class="hljs-title function_">defineProps</span>([<span class="hljs-string">&#x27;title&#x27;</span>]); <span class="hljs-comment">// title 被声明为 props</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>(); <span class="hljs-comment">// attrs 仅包含未声明的 id、class、desc</span></span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>此时 <code>v-bind=&quot;$attrs&quot;</code> 仅转发 <code>id</code>、<code>class</code>、<code>desc</code>，若 Child 需要 <code>title</code>，需中间组件手动传递：<code>&lt;Child :title=&quot;title&quot; v-bind=&quot;$attrs&quot; /&gt;</code>。</p>
+<h2 id="五、v-on-监听器继承"><a href="#五、v-on-监听器继承" class="headerlink" title="五、v-on 监听器继承"></a>五、v-on 监听器继承</h2><p>Vue3 中，<code>$attrs</code> 不仅包含属性，还包含父组件传递的 <strong>v-on 事件监听器</strong>（事件以 <code>onXxx</code> 形式存在，如 <code>@click</code> 对应 <code>attrs.onClick</code>）。转发 <code>$attrs</code> 时，事件会自动同步传递。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 父组件传递事件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;handleClick&quot;</span> @<span class="hljs-attr">input</span>=<span class="hljs-string">&quot;handleInput&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 子组件接收并转发事件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span>&gt;</span>点击我<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span> <span class="hljs-comment">&lt;!-- 点击会触发父组件的 handleClick --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; useAttrs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();</span><br><span class="language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(attrs); <span class="hljs-comment">// &#123; onClick: ƒ, onInput: ƒ &#125;</span></span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>与 Vue2 区别：Vue2 中事件需通过 <code>$listeners</code> 单独转发，Vue3 中事件统一归入 <code>$attrs</code>，简化了转发逻辑。</p>
+</blockquote>
+<h2 id="六、适用场景与不适用场景"><a href="#六、适用场景与不适用场景" class="headerlink" title="六、适用场景与不适用场景"></a>六、适用场景与不适用场景</h2><h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<li><p><strong>封装第三方组件</strong><br>无需声明第三方组件的所有属性，通过 <code>v-bind=&quot;$attrs&quot;</code> 自动转发，减少代码冗余：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 封装 Element Plus 的 ElInput --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">el-input</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;modelValue&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> props = <span class="hljs-title function_">defineProps</span>([<span class="hljs-string">&#x27;modelValue&#x27;</span>]);</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>多层级属性透传</strong><br>超过 2 层的组件结构（如 Page→Card→Form→Input），用 <code>v-bind=&quot;$attrs&quot;</code> 转发比每层声明 props 更高效。</p>
+</li>
+<li><p><strong>动态属性传递</strong><br>接收不确定的动态属性（如后端配置的表单属性），<code>$attrs</code> 可作为灵活的容器。</p>
+</li>
+</ol>
+<h3 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h3><ol>
+<li><p><strong>需要类型校验</strong><br><code>$attrs</code> 无类型校验，需严格校验时用 props：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 推荐：用 props 做类型校验</span><br><span class="hljs-keyword">const</span> props = <span class="hljs-title function_">defineProps</span>(&#123;<br>  <span class="hljs-attr">age</span>: &#123; <span class="hljs-attr">type</span>: <span class="hljs-title class_">Number</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>需要默认值</strong><br><code>$attrs</code> 无法设置默认值，需默认值时用 props 的 <code>default</code> 选项。</p>
+</li>
+<li><p><strong>属性需加工处理</strong><br>需修改属性值（如格式化）时，建议通过 props 接收后加工再传递。</p>
+</li>
+</ol>
+<h2 id="七、常见问题与解决方案"><a href="#七、常见问题与解决方案" class="headerlink" title="七、常见问题与解决方案"></a>七、常见问题与解决方案</h2><h3 id="1-样式冲突（class-style-自动合并）"><a href="#1-样式冲突（class-style-自动合并）" class="headerlink" title="1. 样式冲突（class&#x2F;style 自动合并）"></a>1. 样式冲突（class&#x2F;style 自动合并）</h3><p><strong>问题</strong>：透传的 <code>class</code>&#x2F;<code>style</code> 与子组件根元素样式冲突。<br><strong>解决方案</strong>：禁用自动绑定，手动控制绑定位置：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;parent&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 仅将非样式属性转发给子组件 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;filterAttrs&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; useAttrs, computed, defineOptions &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;</span><br><span class="language-javascript"><span class="hljs-title function_">defineOptions</span>(&#123; <span class="hljs-attr">inheritAttrs</span>: <span class="hljs-literal">false</span> &#125;); <span class="hljs-comment">// 禁用根元素自动绑定</span></span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> attrs = <span class="hljs-title function_">useAttrs</span>();</span><br><span class="language-javascript"><span class="hljs-comment">// 过滤 class 和 style</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> filterAttrs = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> &#123; <span class="hljs-attr">class</span>: _, <span class="hljs-attr">style</span>: __, ...rest &#125; = attrs;</span><br><span class="language-javascript">  <span class="hljs-keyword">return</span> rest;</span><br><span class="language-javascript">&#125;);</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-中间组件声明的-props-无法传递到子组件"><a href="#2-中间组件声明的-props-无法传递到子组件" class="headerlink" title="2. 中间组件声明的 props 无法传递到子组件"></a>2. 中间组件声明的 props 无法传递到子组件</h3><p><strong>问题</strong>：中间组件声明的 props 不在 <code>$attrs</code> 中，导致子组件无法获取。<br><strong>解决方案</strong>：中间组件手动传递已声明的 props：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- Middle.vue --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">Child</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span> <span class="hljs-attr">:title</span>=<span class="hljs-string">&quot;title&quot;</span> /&gt;</span> <span class="hljs-comment">&lt;!-- 手动传递 title --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> props = <span class="hljs-title function_">defineProps</span>([<span class="hljs-string">&#x27;title&#x27;</span>]); <span class="hljs-comment">// title 被声明为 props</span></span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>透传 Attributes（<code>$attrs</code>）是 Vue3 组件通信的重要补充，核心价值在于<strong>简化未声明属性 &#x2F; 事件的传递</strong>。关键知识点：</p>
+<ul>
+<li><code>$attrs</code> 包含未被 props 声明的属性和事件，需通过 <code>useAttrs()</code> 或 <code>this.$attrs</code> 访问；</li>
+<li>单根组件默认自动绑定 <code>$attrs</code> 到根元素，<code>inheritAttrs: false</code> 可禁用此行为；</li>
+<li>多根组件必须手动绑定 <code>$attrs</code>，否则会触发警告；</li>
+<li>嵌套组件需通过 <code>v-bind=&quot;$attrs&quot;</code> 手动转发 <code>$attrs</code>；</li>
+<li>适合封装第三方组件、多层透传和动态属性场景，不适合需要类型校验或默认值的场景。</li>
+</ul>
+<p>通过合理使用 <code>$attrs</code>，可大幅提升组件的灵活性和开发效率。</p>
+<blockquote>
+<p>官方文档完整参考：<a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/components/attrs.html">透传 Attributes | Vue.js</a></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Vue/" class="category-chain-item">Vue</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/Vue/" class="print-no-link">#Vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Vue3 笔记：透传 Attributes</div>
+      <div>https://hnugreycrow.github.io/2025/08/22/Vue3-透传Attributes/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>HNUGreycrow</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/18/Vue3-%E6%B7%B1%E5%85%A5%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F/" title="Vue3 笔记：深入响应式系统">
+                        <span class="hidden-mobile">Vue3 笔记：深入响应式系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"HNUGreycrow/HNUGreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
