@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>Electron中导入better-sqlite3：为什么import不行，require却可以？</title>
+    <link href="/2025/09/01/Electron%E4%B8%AD%E5%AF%BC%E5%85%A5better-sqlite3/"/>
+    <url>/2025/09/01/Electron%E4%B8%AD%E5%AF%BC%E5%85%A5better-sqlite3/</url>
+    
+    <content type="html"><![CDATA[<p>在Electron开发过程中，我遇到一个有趣的问题：使用<code>import Database from &quot;better-sqlite3&quot;</code>导入模块时，不仅出现类型声明文件缺失的警告，还会报<code>__filename is not defined</code>的运行时错误。而换成<code>const Database = require(&quot;better-sqlite3&quot;)</code>后，一切正常。这个现象背后，其实是JavaScript两种主流模块系统——ESM与CommonJS的差异在作祟。</p><h2 id="问题现象与直接原因"><a href="#问题现象与直接原因" class="headerlink" title="问题现象与直接原因"></a>问题现象与直接原因</h2><p>当使用ES模块语法导入better-sqlite3时，会遇到两个问题：</p><ol><li>类型检查错误：<code>无法找到模块“better-sqlite3”的声明文件</code></li><li>运行时错误：<code>ReferenceError: __filename is not defined</code></li></ol><p>而切换到CommonJS的require语法后，这两个问题都消失了。要理解其中的原因，我们需要先深入了解ESM与CommonJS这两种模块系统的核心差异。</p><h2 id="模块化的两种-“流派”：ESM-和-CommonJS"><a href="#模块化的两种-“流派”：ESM-和-CommonJS" class="headerlink" title="模块化的两种 “流派”：ESM 和 CommonJS"></a>模块化的两种 “流派”：ESM 和 CommonJS</h2><p>JavaScript 一开始是没有 “模块” 概念的，后来为了让代码更好管理，才出现了两种主流的模块系统：</p><h3 id="1-CommonJS：Node-js-的-“老规矩”"><a href="#1-CommonJS：Node-js-的-“老规矩”" class="headerlink" title="1. CommonJS：Node.js 的 “老规矩”"></a>1. CommonJS：Node.js 的 “老规矩”</h3><p><strong>诞生背景</strong>：2009 年前后，Node.js 刚出来，需要一套规则管理服务器端的代码（比如读取文件、操作数据库），于是 CommonJS 就成了 Node.js 的 “默认规范”。</p><p><strong>核心特点</strong>：</p><ul><li><p>用<code>require</code>导入模块，用<code>module.exports</code>导出模块</p></li><li><p>比如：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 导出（math.js）</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123; <span class="hljs-keyword">return</span> a + b; &#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123; add &#125;;<br><br><span class="hljs-comment">// 导入（app.js）</span><br><span class="hljs-keyword">const</span> math = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./math&#x27;</span>); <span class="hljs-comment">// 可以省略.js后缀</span><br>math.<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 结果是3</span><br></code></pre></td></tr></table></figure></li><li><p>运行时才加载模块，支持 “动态导入”（比如在<code>if</code>条件里加载不同模块）</p></li><li><p>每个模块里自带几个 “全局变量”：<code>__filename</code>（当前文件路径）、<code>__dirname</code>（当前文件夹路径），方便处理文件路径</p></li></ul><h3 id="2-ESM：浏览器和-Node-js-通用的-“新规范”"><a href="#2-ESM：浏览器和-Node-js-通用的-“新规范”" class="headerlink" title="2. ESM：浏览器和 Node.js 通用的 “新规范”"></a>2. ESM：浏览器和 Node.js 通用的 “新规范”</h3><p><strong>诞生背景</strong>：后来前端项目越来越大，也需要模块化。2015 年 ES6 推出了 ESM（ES Modules），想统一浏览器和服务器的模块化标准。</p><p><strong>核心特点</strong>：</p><ul><li><p>用<code>import</code>导入模块，用<code>export</code>导出模块</p></li><li><p>比如：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 导出（math.js）</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123; <span class="hljs-keyword">return</span> a + b; &#125;<br><br><span class="hljs-comment">// 导入（app.js）</span><br><span class="hljs-keyword">import</span> &#123; add &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./math.js&#x27;</span>; <span class="hljs-comment">// 必须写全.js后缀</span><br><span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 结果是3</span><br></code></pre></td></tr></table></figure></li><li><p>加载前先分析依赖（编译时静态分析），不支持在<code>if</code>里动态导入</p></li><li><p>没有<code>__filename</code>、<code>__dirname</code>这些变量（设计上更 “纯粹”，不绑定 Node.js 的文件系统）</p></li></ul><h2 id="关键差异：为什么这些区别会导致报错？"><a href="#关键差异：为什么这些区别会导致报错？" class="headerlink" title="关键差异：为什么这些区别会导致报错？"></a>关键差异：为什么这些区别会导致报错？</h2><p>回到开头的问题：<code>better-sqlite3</code>为啥认<code>require</code>不认<code>import</code>？</p><p>关键就在 <strong>CommonJS 的 “全局变量”</strong> 上。</p><p><code>better-sqlite3</code>是一个 “Node.js 原生扩展”（底层用 C++ 写的，需要操作本地文件），它的代码里可能直接用了<code>__filename</code>来处理路径（比如找数据库文件的位置）。</p><p>当你用<code>import</code>时：</p><ul><li>代码会按 ESM 规范运行，环境里没有<code>__filename</code>这个变量</li><li><code>better-sqlite3</code>找不到这个变量，就会报<code>ReferenceError</code></li></ul><p>当你用<code>require</code>时：</p><ul><li>代码会按 CommonJS 规范运行，<code>__filename</code>这些变量自动存在</li><li><code>better-sqlite3</code>能正常找到需要的变量，自然就不报错了</li></ul><p>在我的 Electron + Vue + Vite 项目中，整个项目采用 ES 模块（ESM）规范开发，并通过<code>package.json</code>中配置<code>&quot;type&quot;: &quot;module&quot;</code>实现了统一的模块化管理。</p><p>针对<code>better-sqlite3</code>这类依赖 CommonJS 环境的模块，我们通过以下方式解决了 ESM 下的导入兼容问题：</p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 在ES模块中模拟CommonJS的require功能（因为Electron有时需要使用CommonJS模块）</span><br><span class="hljs-keyword">const</span> <span class="hljs-built_in">require</span> = <span class="hljs-title function_">createRequire</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">Database</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;better-sqlite3&quot;</span>);<br></code></pre></td></tr></table></figure><p>通过<code>createRequire</code>从当前模块的<code>import.meta.url</code>创建一个兼容 CommonJS 的<code>require</code>函数，既保留了项目整体的 ESM 规范，又能顺利导入<code>better-sqlite3</code>这类依赖传统 CommonJS 特性的模块，确保了项目的正常运行。</p><h2 id="类型声明问题：另一个小插曲"><a href="#类型声明问题：另一个小插曲" class="headerlink" title="类型声明问题：另一个小插曲"></a>类型声明问题：另一个小插曲</h2><p>开头还提到 “找不到声明文件” 的警告，这是 TypeScript 的 “小脾气”：</p><ul><li><p><code>better-sqlite3</code>本身是用 JavaScript&#x2F;C++ 写的，没有自带 TypeScript 的类型说明</p></li><li><p>解决办法很简单：安装社区提供的类型声明文件</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install @types/better-sqlite3 --save-dev<br></code></pre></td></tr></table></figure><p>（但这只能解决类型提示问题，解决不了<code>__filename</code>的报错，因为那是运行时问题）</p></li></ul><h2 id="总结：该用-import-还是-require？"><a href="#总结：该用-import-还是-require？" class="headerlink" title="总结：该用 import 还是 require？"></a>总结：该用 import 还是 require？</h2><p>简单说，看模块 “脾气”：</p><ol><li>像<code>better-sqlite3</code>这种依赖 Node.js 原生特性（比如<code>__filename</code>）的模块，优先用<code>require</code></li><li>纯 JavaScript 写的现代模块（尤其是前端库），可以用<code>import</code></li><li>如果项目里两种模块都有，可以混合使用（Electron 支持这种混合模式）</li></ol><p>ESM 是未来的趋势（浏览器和 Node.js 都在推广），但很多 Node.js 原生模块还依赖 CommonJS 的特性。了解这两种规范的区别，能帮你少踩很多 “导入报错” 的坑～</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>技术踩坑</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Electron</tag>
+      
+      <tag>ESM</tag>
+      
+      <tag>CommonJS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Vue3 笔记：透传 Attributes</title>
     <link href="/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/"/>
     <url>/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/</url>
@@ -181,9 +210,7 @@
     
     <categories>
       
-      <category>问题解决</category>
-      
-      <category>SpringBoot</category>
+      <category>技术踩坑</category>
       
     </categories>
     
