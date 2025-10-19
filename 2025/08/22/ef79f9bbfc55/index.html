@@ -22,18 +22,18 @@
     <meta name="description" content="在 Vue 组件开发中，属性传递是核心场景之一。props 适用于明确声明的属性，但当需要灵活传递未声明的属性或事件、封装第三方组件时，透传 Attributes 成为更高效的解决方案。 一、什么是透传 Attributes？官方定义：透传 Attributes 指传递给组件但未被声明为 props 或 emits 的 attribute 或 v-on 事件监听器，最常见的包括 class、sty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue3 笔记：透传 Attributes">
-<meta property="og:url" content="https://hnugreycrow.github.io/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/index.html">
+<meta property="og:url" content="https://hnugreycrow.github.io/2025/08/22/ef79f9bbfc55/index.html">
 <meta property="og:site_name" content="HNUGreycrow Blog">
 <meta property="og:description" content="在 Vue 组件开发中，属性传递是核心场景之一。props 适用于明确声明的属性，但当需要灵活传递未声明的属性或事件、封装第三方组件时，透传 Attributes 成为更高效的解决方案。 一、什么是透传 Attributes？官方定义：透传 Attributes 指传递给组件但未被声明为 props 或 emits 的 attribute 或 v-on 事件监听器，最常见的包括 class、sty">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hnugreycrow.github.io/img/vue.png">
+<meta property="og:image" content="https://hnugreycrow.github.io/img/posts/vue.png">
 <meta property="article:published_time" content="2025-08-22T15:51:12.000Z">
-<meta property="article:modified_time" content="2025-08-23T04:02:14.000Z">
+<meta property="article:modified_time" content="2025-08-23T04:00:00.000Z">
 <meta property="article:author" content="HNUGreycrow">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://hnugreycrow.github.io/img/vue.png">
+<meta name="twitter:image" content="https://hnugreycrow.github.io/img/posts/vue.png">
   
   
   
@@ -75,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"a9b9704b8a35ccabd111c1448183702a","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"eeAwcmG8iNZQHNhjHPIdprKw-gzGzoHsz","app_key":"t0nCPF5ek4tVioN7mVhksCS7","server_url":"https://eeawcmg8.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"a9b9704b8a35ccabd111c1448183702a","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"eeAwcmG8iNZQHNhjHPIdprKw-gzGzoHsz","app_key":"t0nCPF5ek4tVioN7mVhksCS7","server_url":"https://eeawcmg8.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -348,7 +348,7 @@
     
       
       
-        <a href="/2025/08/16/Vue3-%E5%93%8D%E5%BA%94%E5%BC%8F%E5%9F%BA%E7%A1%80/" title="Vue3 笔记：响应式基础"
+        <a href="/2025/08/16/7d7a56076d74/" title="Vue3 笔记：响应式基础"
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Vue3 笔记：响应式基础</span>
@@ -357,7 +357,7 @@
     
       
       
-        <a href="/2025/08/18/Vue3-%E6%B7%B1%E5%85%A5%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F/" title="Vue3 笔记：深入响应式系统"
+        <a href="/2025/08/18/4e40f7605990/" title="Vue3 笔记：深入响应式系统"
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Vue3 笔记：深入响应式系统</span>
@@ -366,7 +366,7 @@
     
       
       
-        <a href="/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/" title="Vue3 笔记：透传 Attributes"
+        <a href="/2025/08/22/ef79f9bbfc55/" title="Vue3 笔记：透传 Attributes"
            class="list-group-item list-group-item-action
            active">
           <span class="category-post">Vue3 笔记：透传 Attributes</span>
@@ -546,7 +546,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>Vue3 笔记：透传 Attributes</div>
-      <div>https://hnugreycrow.github.io/2025/08/22/Vue3-透传Attributes/</div>
+      <div>https://hnugreycrow.github.io/2025/08/22/ef79f9bbfc55/</div>
     </div>
     <div class="license-meta">
       
@@ -590,7 +590,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/01/Electron%E4%B8%AD%E5%AF%BC%E5%85%A5better-sqlite3/" title="Electron中导入better-sqlite3：为什么import不行，require却可以？">
+                      <a href="/2025/09/01/50951d80d876/" title="Electron中导入better-sqlite3：为什么import不行，require却可以？">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Electron中导入better-sqlite3：为什么import不行，require却可以？</span>
                         <span class="visible-mobile">上一篇</span>
@@ -600,7 +600,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/08/18/Vue3-%E6%B7%B1%E5%85%A5%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F/" title="Vue3 笔记：深入响应式系统">
+                      <a href="/2025/08/18/4e40f7605990/" title="Vue3 笔记：深入响应式系统">
                         <span class="hidden-mobile">Vue3 笔记：深入响应式系统</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -748,7 +748,7 @@
     <div class="footer-inner">
   
     <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
     </div>
   
   

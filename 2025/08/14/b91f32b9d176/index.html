@@ -19,26 +19,25 @@
   <meta name="author" content="HNUGreycrow">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在Electron开发过程中，我遇到一个有趣的问题：使用import Database from &quot;better-sqlite3&quot;导入模块时，不仅出现类型声明文件缺失的警告，还会报__filename is not defined的运行时错误。而换成const Database &#x3D; require(&quot;better-sqlite3&quot;)后，一切正常。这个现象背后">
+    <meta name="description" content="一、数据卷核心概念1.1 定义数据卷是宿主机文件系统中的一个目录或文件，通过挂载机制与容器内指定路径关联，实现宿主机与容器的双向数据共享。 1.2 本质 类似Linux的mount命令，容器访问挂载路径时实际操作的是宿主机数据卷 数据卷独立于容器生命周期，容器删除后数据仍保存在宿主机  二、数据卷的三大核心作用数据卷的设计初衷，就是为了解决容器与数据分离的问题，其核心作用可以概括为三点： 2.1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Electron中导入better-sqlite3：为什么import不行，require却可以？">
-<meta property="og:url" content="https://hnugreycrow.github.io/2025/09/01/Electron%E4%B8%AD%E5%AF%BC%E5%85%A5better-sqlite3/index.html">
+<meta property="og:title" content="Docker学习笔记(二)：容器数据卷">
+<meta property="og:url" content="https://hnugreycrow.github.io/2025/08/14/b91f32b9d176/index.html">
 <meta property="og:site_name" content="HNUGreycrow Blog">
-<meta property="og:description" content="在Electron开发过程中，我遇到一个有趣的问题：使用import Database from &quot;better-sqlite3&quot;导入模块时，不仅出现类型声明文件缺失的警告，还会报__filename is not defined的运行时错误。而换成const Database &#x3D; require(&quot;better-sqlite3&quot;)后，一切正常。这个现象背后">
+<meta property="og:description" content="一、数据卷核心概念1.1 定义数据卷是宿主机文件系统中的一个目录或文件，通过挂载机制与容器内指定路径关联，实现宿主机与容器的双向数据共享。 1.2 本质 类似Linux的mount命令，容器访问挂载路径时实际操作的是宿主机数据卷 数据卷独立于容器生命周期，容器删除后数据仍保存在宿主机  二、数据卷的三大核心作用数据卷的设计初衷，就是为了解决容器与数据分离的问题，其核心作用可以概括为三点： 2.1">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hnugreycrow.github.io/img/problem.png">
-<meta property="article:published_time" content="2025-09-01T14:42:46.000Z">
-<meta property="article:modified_time" content="2025-09-01T15:27:32.000Z">
+<meta property="og:image" content="https://hnugreycrow.github.io/img/posts/docker.png">
+<meta property="article:published_time" content="2025-08-14T03:06:26.000Z">
+<meta property="article:modified_time" content="2025-08-18T04:00:00.000Z">
 <meta property="article:author" content="HNUGreycrow">
-<meta property="article:tag" content="Electron">
-<meta property="article:tag" content="ESM">
-<meta property="article:tag" content="CommonJS">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="学习笔记">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://hnugreycrow.github.io/img/problem.png">
+<meta name="twitter:image" content="https://hnugreycrow.github.io/img/posts/docker.png">
   
   
   
-  <title>Electron中导入better-sqlite3：为什么import不行，require却可以？ - HNUGreycrow Blog</title>
+  <title>Docker学习笔记(二)：容器数据卷 - HNUGreycrow Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -76,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"a9b9704b8a35ccabd111c1448183702a","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"eeAwcmG8iNZQHNhjHPIdprKw-gzGzoHsz","app_key":"t0nCPF5ek4tVioN7mVhksCS7","server_url":"https://eeawcmg8.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"hnugreycrow.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"a9b9704b8a35ccabd111c1448183702a","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"eeAwcmG8iNZQHNhjHPIdprKw-gzGzoHsz","app_key":"t0nCPF5ek4tVioN7mVhksCS7","server_url":"https://eeawcmg8.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -236,13 +235,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/wallpapers/80d7d2aa1ccb4bdaa66640c40269b25d20250808.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('/img/posts/docker.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Electron中导入better-sqlite3：为什么import不行，require却可以？"></span>
+            <span id="subtitle" data-typed-text="Docker学习笔记(二)：容器数据卷"></span>
           
         </div>
 
@@ -253,8 +252,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-01 22:42" pubdate>
-          2025年9月1日 晚上
+        <time datetime="2025-08-14 11:06" pubdate>
+          2025年8月14日 上午
         </time>
       </span>
     
@@ -265,7 +264,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          1.1k 字
         
       </span>
     
@@ -276,7 +275,7 @@
         
         
         
-          10 分钟
+          9 分钟
         
       </span>
     
@@ -330,17 +329,44 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="技术踩坑"
-        id="heading-196ca9d74431433ba376c4bbd52e5132" role="tab" data-toggle="collapse" href="#collapse-196ca9d74431433ba376c4bbd52e5132"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="容器技术"
+        id="heading-196920ee492a03af919613ddd6793c93" role="tab" data-toggle="collapse" href="#collapse-196920ee492a03af919613ddd6793c93"
         aria-expanded="true"
       >
-        技术踩坑
-        <span class="list-group-count">(2)</span>
+        容器技术
+        <span class="list-group-count">(3)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-196ca9d74431433ba376c4bbd52e5132"
-           role="tabpanel" aria-labelledby="heading-196ca9d74431433ba376c4bbd52e5132">
+      <div class="category-collapse collapse show" id="collapse-196920ee492a03af919613ddd6793c93"
+           role="tabpanel" aria-labelledby="heading-196920ee492a03af919613ddd6793c93">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Docker"
+        id="heading-c5fd214cdd0d2b3b4272e73b022ba5c2" role="tab" data-toggle="collapse" href="#collapse-c5fd214cdd0d2b3b4272e73b022ba5c2"
+        aria-expanded="true"
+      >
+        Docker
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-c5fd214cdd0d2b3b4272e73b022ba5c2"
+           role="tabpanel" aria-labelledby="heading-c5fd214cdd0d2b3b4272e73b022ba5c2">
         
         
           
@@ -349,24 +375,37 @@
     
       
       
-        <a href="/2025/08/13/%E8%A7%A3%E5%86%B3SpringBoot%E4%B8%ADLombok%E6%B3%A8%E8%A7%A3%E5%A4%B1%E6%95%88%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" title="解决SpringBoot中Lombok注解失效的那些坑"
+        <a href="/2025/08/13/e37a265aefa7/" title="Docker学习笔记(一)：Docker常用命令"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">解决SpringBoot中Lombok注解失效的那些坑</span>
+          <span class="category-post">Docker学习笔记(一)：Docker常用命令</span>
         </a>
       
     
       
       
-        <a href="/2025/09/01/Electron%E4%B8%AD%E5%AF%BC%E5%85%A5better-sqlite3/" title="Electron中导入better-sqlite3：为什么import不行，require却可以？"
+        <a href="/2025/08/14/b91f32b9d176/" title="Docker学习笔记(二)：容器数据卷"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">Electron中导入better-sqlite3：为什么import不行，require却可以？</span>
+          <span class="category-post">Docker学习笔记(二)：容器数据卷</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/14/c2a5f831d2a0/" title="Docker学习笔记(三)：部署MySQL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Docker学习笔记(三)：部署MySQL</span>
         </a>
       
     
   </div>
 
+        
+      </div>
+    </div>
+  
         
       </div>
     </div>
@@ -383,12 +422,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Electron中导入better-sqlite3：为什么import不行，require却可以？</h1>
+            <h1 id="seo-header">Docker学习笔记(二)：容器数据卷</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年9月1日 晚上
+                    本文最后更新于 2025年8月18日 中午
                   
                 
               </p>
@@ -396,75 +435,71 @@
             
               <div class="markdown-body">
                 
-                <p>在Electron开发过程中，我遇到一个有趣的问题：使用<code>import Database from &quot;better-sqlite3&quot;</code>导入模块时，不仅出现类型声明文件缺失的警告，还会报<code>__filename is not defined</code>的运行时错误。而换成<code>const Database = require(&quot;better-sqlite3&quot;)</code>后，一切正常。这个现象背后，其实是JavaScript两种主流模块系统——ESM与CommonJS的差异在作祟。</p>
-<h2 id="问题现象与直接原因"><a href="#问题现象与直接原因" class="headerlink" title="问题现象与直接原因"></a>问题现象与直接原因</h2><p>当使用ES模块语法导入better-sqlite3时，会遇到两个问题：</p>
-<ol>
-<li>类型检查错误：<code>无法找到模块“better-sqlite3”的声明文件</code></li>
-<li>运行时错误：<code>ReferenceError: __filename is not defined</code></li>
-</ol>
-<p>而切换到CommonJS的require语法后，这两个问题都消失了。要理解其中的原因，我们需要先深入了解ESM与CommonJS这两种模块系统的核心差异。</p>
-<h2 id="模块化的两种-“流派”：ESM-和-CommonJS"><a href="#模块化的两种-“流派”：ESM-和-CommonJS" class="headerlink" title="模块化的两种 “流派”：ESM 和 CommonJS"></a>模块化的两种 “流派”：ESM 和 CommonJS</h2><p>JavaScript 一开始是没有 “模块” 概念的，后来为了让代码更好管理，才出现了两种主流的模块系统：</p>
-<h3 id="1-CommonJS：Node-js-的-“老规矩”"><a href="#1-CommonJS：Node-js-的-“老规矩”" class="headerlink" title="1. CommonJS：Node.js 的 “老规矩”"></a>1. CommonJS：Node.js 的 “老规矩”</h3><p><strong>诞生背景</strong>：2009 年前后，Node.js 刚出来，需要一套规则管理服务器端的代码（比如读取文件、操作数据库），于是 CommonJS 就成了 Node.js 的 “默认规范”。</p>
-<p><strong>核心特点</strong>：</p>
-<ul>
-<li><p>用<code>require</code>导入模块，用<code>module.exports</code>导出模块</p>
-</li>
-<li><p>比如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 导出（math.js）</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123; <span class="hljs-keyword">return</span> a + b; &#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123; add &#125;;<br><br><span class="hljs-comment">// 导入（app.js）</span><br><span class="hljs-keyword">const</span> math = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./math&#x27;</span>); <span class="hljs-comment">// 可以省略.js后缀</span><br>math.<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 结果是3</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><p>运行时才加载模块，支持 “动态导入”（比如在<code>if</code>条件里加载不同模块）</p>
-</li>
-<li><p>每个模块里自带几个 “全局变量”：<code>__filename</code>（当前文件路径）、<code>__dirname</code>（当前文件夹路径），方便处理文件路径</p>
+                <h2 id="一、数据卷核心概念"><a href="#一、数据卷核心概念" class="headerlink" title="一、数据卷核心概念"></a>一、数据卷核心概念</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p><strong>数据卷是宿主机文件系统中的一个目录或文件</strong>，通过挂载机制与容器内指定路径关联，实现宿主机与容器的双向数据共享。</p>
+<h3 id="1-2-本质"><a href="#1-2-本质" class="headerlink" title="1.2 本质"></a>1.2 本质</h3><ul>
+<li>类似Linux的<code>mount</code>命令，容器访问挂载路径时实际操作的是宿主机数据卷</li>
+<li>数据卷独立于容器生命周期，容器删除后数据仍保存在宿主机</li>
+</ul>
+<h2 id="二、数据卷的三大核心作用"><a href="#二、数据卷的三大核心作用" class="headerlink" title="二、数据卷的三大核心作用"></a>二、数据卷的三大核心作用</h2><p>数据卷的设计初衷，就是为了解决容器与数据分离的问题，其核心作用可以概括为三点：</p>
+<h3 id="2-1-容器数据持久化"><a href="#2-1-容器数据持久化" class="headerlink" title="2.1 容器数据持久化"></a>2.1 容器数据持久化</h3><ul>
+<li><strong>场景</strong>：数据库、日志文件等需要长期保存的数据</li>
+<li><strong>案例</strong>：MySQL容器挂载数据卷后，即使容器崩溃，数据库文件仍可通过数据卷恢复</li>
+</ul>
+<h3 id="2-2-宿主机与容器双向交互"><a href="#2-2-宿主机与容器双向交互" class="headerlink" title="2.2 宿主机与容器双向交互"></a>2.2 宿主机与容器双向交互</h3><ul>
+<li><strong>实时同步特性</strong>：<ul>
+<li>宿主机修改卷目录文件 → 容器内立即生效（如本地代码编辑后容器热更新）</li>
+<li>容器生成数据（日志、配置）→ 实时同步到宿主机（方便本地查看分析）</li>
+</ul>
 </li>
 </ul>
-<h3 id="2-ESM：浏览器和-Node-js-通用的-“新规范”"><a href="#2-ESM：浏览器和-Node-js-通用的-“新规范”" class="headerlink" title="2. ESM：浏览器和 Node.js 通用的 “新规范”"></a>2. ESM：浏览器和 Node.js 通用的 “新规范”</h3><p><strong>诞生背景</strong>：后来前端项目越来越大，也需要模块化。2015 年 ES6 推出了 ESM（ES Modules），想统一浏览器和服务器的模块化标准。</p>
-<p><strong>核心特点</strong>：</p>
-<ul>
-<li><p>用<code>import</code>导入模块，用<code>export</code>导出模块</p>
-</li>
-<li><p>比如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 导出（math.js）</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123; <span class="hljs-keyword">return</span> a + b; &#125;<br><br><span class="hljs-comment">// 导入（app.js）</span><br><span class="hljs-keyword">import</span> &#123; add &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./math.js&#x27;</span>; <span class="hljs-comment">// 必须写全.js后缀</span><br><span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 结果是3</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><p>加载前先分析依赖（编译时静态分析），不支持在<code>if</code>里动态导入</p>
-</li>
-<li><p>没有<code>__filename</code>、<code>__dirname</code>这些变量（设计上更 “纯粹”，不绑定 Node.js 的文件系统）</p>
-</li>
+<h3 id="2-3-多容器数据共享"><a href="#2-3-多容器数据共享" class="headerlink" title="2.3 多容器数据共享"></a>2.3 多容器数据共享</h3><ul>
+<li><strong>场景</strong>：前端容器与后端容器共享静态资源、多个服务共享配置文件</li>
+<li><strong>案例</strong>：Nginx（展示静态页）与Node.js（生成静态页）通过数据卷自动同步资源</li>
 </ul>
-<h2 id="关键差异：为什么这些区别会导致报错？"><a href="#关键差异：为什么这些区别会导致报错？" class="headerlink" title="关键差异：为什么这些区别会导致报错？"></a>关键差异：为什么这些区别会导致报错？</h2><p>回到开头的问题：<code>better-sqlite3</code>为啥认<code>require</code>不认<code>import</code>？</p>
-<p>关键就在 <strong>CommonJS 的 “全局变量”</strong> 上。</p>
-<p><code>better-sqlite3</code>是一个 “Node.js 原生扩展”（底层用 C++ 写的，需要操作本地文件），它的代码里可能直接用了<code>__filename</code>来处理路径（比如找数据库文件的位置）。</p>
-<p>当你用<code>import</code>时：</p>
-<ul>
-<li>代码会按 ESM 规范运行，环境里没有<code>__filename</code>这个变量</li>
-<li><code>better-sqlite3</code>找不到这个变量，就会报<code>ReferenceError</code></li>
-</ul>
-<p>当你用<code>require</code>时：</p>
-<ul>
-<li>代码会按 CommonJS 规范运行，<code>__filename</code>这些变量自动存在</li>
-<li><code>better-sqlite3</code>能正常找到需要的变量，自然就不报错了</li>
-</ul>
-<p>在我的 Electron + Vue + Vite 项目中，整个项目采用 ES 模块（ESM）规范开发，并通过<code>package.json</code>中配置<code>&quot;type&quot;: &quot;module&quot;</code>实现了统一的模块化管理。</p>
-<p>针对<code>better-sqlite3</code>这类依赖 CommonJS 环境的模块，我们通过以下方式解决了 ESM 下的导入兼容问题：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 在ES模块中模拟CommonJS的require功能（因为Electron有时需要使用CommonJS模块）</span><br><span class="hljs-keyword">const</span> <span class="hljs-built_in">require</span> = <span class="hljs-title function_">createRequire</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">Database</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;better-sqlite3&quot;</span>);<br></code></pre></td></tr></table></figure>
+<h2 id="三、数据卷的基础操作实践"><a href="#三、数据卷的基础操作实践" class="headerlink" title="三、数据卷的基础操作实践"></a>三、数据卷的基础操作实践</h2><h3 id="3-1-创建并挂载数据卷（基础命令）"><a href="#3-1-创建并挂载数据卷（基础命令）" class="headerlink" title="3.1 创建并挂载数据卷（基础命令）"></a>3.1 创建并挂载数据卷（基础命令）</h3><p>使用docker run命令时，通过-v参数可以直接创建并挂载数据卷：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 语法：docker run -v 宿主机路径:容器内路径 [其他参数] 镜像名</span><br>docker run -d \<br>  -p 8080:80 \<br>  -v /root/nginx/myapp:/usr/share/nginx/html \  <span class="hljs-comment"># 挂载数据卷</span><br>  --name mynginx \<br>  nginx<br></code></pre></td></tr></table></figure>
 
-<p>通过<code>createRequire</code>从当前模块的<code>import.meta.url</code>创建一个兼容 CommonJS 的<code>require</code>函数，既保留了项目整体的 ESM 规范，又能顺利导入<code>better-sqlite3</code>这类依赖传统 CommonJS 特性的模块，确保了项目的正常运行。</p>
-<h2 id="类型声明问题：另一个小插曲"><a href="#类型声明问题：另一个小插曲" class="headerlink" title="类型声明问题：另一个小插曲"></a>类型声明问题：另一个小插曲</h2><p>开头还提到 “找不到声明文件” 的警告，这是 TypeScript 的 “小脾气”：</p>
+<p>上述命令的含义是：</p>
 <ul>
-<li><p><code>better-sqlite3</code>本身是用 JavaScript&#x2F;C++ 写的，没有自带 TypeScript 的类型说明</p>
+<li><p>启动一个名为mynginx的 Nginx 容器；</p>
 </li>
-<li><p>解决办法很简单：安装社区提供的类型声明文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install @types/better-sqlite3 --save-dev<br></code></pre></td></tr></table></figure>
-
-<p>（但这只能解决类型提示问题，解决不了<code>__filename</code>的报错，因为那是运行时问题）</p>
+<li><p>将宿主机的&#x2F;root&#x2F;nginx&#x2F;myapp目录（若不存在会自动创建）挂载到容器内的&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html（Nginx 默认静态文件目录）；</p>
+</li>
+<li><p>此时在宿主机&#x2F;root&#x2F;nginx&#x2F;myapp中放入index.html，访问<a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a>即可看到页面。</p>
 </li>
 </ul>
-<h2 id="总结：该用-import-还是-require？"><a href="#总结：该用-import-还是-require？" class="headerlink" title="总结：该用 import 还是 require？"></a>总结：该用 import 还是 require？</h2><p>简单说，看模块 “脾气”：</p>
-<ol>
-<li>像<code>better-sqlite3</code>这种依赖 Node.js 原生特性（比如<code>__filename</code>）的模块，优先用<code>require</code></li>
-<li>纯 JavaScript 写的现代模块（尤其是前端库），可以用<code>import</code></li>
-<li>如果项目里两种模块都有，可以混合使用（Electron 支持这种混合模式）</li>
+<h3 id="3-2-查看挂载详情"><a href="#3-2-查看挂载详情" class="headerlink" title="3.2. 查看挂载详情"></a>3.2. 查看挂载详情</h3><p>通过docker inspect命令可以查看容器的挂载详情：​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker inspect mynginx​<br></code></pre></td></tr></table></figure>
+
+<p>在输出的 JSON 结果中，找到Mounts字段，会显示如下信息：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-string">&quot;Mounts&quot;</span>: [​<br>    &#123;​<br>        <span class="hljs-string">&quot;Type&quot;</span>: <span class="hljs-string">&quot;bind&quot;</span>,​<br>        <span class="hljs-string">&quot;Source&quot;</span>: <span class="hljs-string">&quot;/root/nginx/myapp&quot;</span>,  <span class="hljs-comment">// 宿主机目录​</span><br>        <span class="hljs-string">&quot;Destination&quot;</span>: <span class="hljs-string">&quot;/usr/share/nginx/html&quot;</span>,  <span class="hljs-comment">// 容器内目录​</span><br>        <span class="hljs-string">&quot;Mode&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>        <span class="hljs-string">&quot;RW&quot;</span>: <span class="hljs-literal">true</span>,  <span class="hljs-comment">// 读写权限（默认可读写）​</span><br>        <span class="hljs-string">&quot;Propagation&quot;</span>: <span class="hljs-string">&quot;rprivate&quot;</span>​<br>    &#125;​<br>]​<br></code></pre></td></tr></table></figure>
+
+<h2 id="四、数据卷容器：简化多容器共享场景"><a href="#四、数据卷容器：简化多容器共享场景" class="headerlink" title="四、数据卷容器：简化多容器共享场景"></a>四、数据卷容器：简化多容器共享场景</h2><p>当多个容器需要共享数据时，逐一为每个容器配置-v参数会显得繁琐。<strong>数据卷容器</strong>（Volume Container）正是为简化这种场景而生。</p>
+<h3 id="4-1-什么是数据卷容器？"><a href="#4-1-什么是数据卷容器？" class="headerlink" title="4.1 什么是数据卷容器？"></a>4.1 什么是数据卷容器？</h3><ul>
+<li>专门用于管理数据卷的 “中介容器”，其他容器通过<code>--volumes-from</code>继承其挂载配置</li>
+<li>优势：简化多容器挂载配置，统一管理数据卷路径</li>
+</ul>
+<h3 id="4-2-使用步骤"><a href="#4-2-使用步骤" class="headerlink" title="4.2 使用步骤"></a>4.2 使用步骤</h3><h4 id="步骤-1：创建数据卷容器"><a href="#步骤-1：创建数据卷容器" class="headerlink" title="步骤 1：创建数据卷容器"></a>步骤 1：创建数据卷容器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建仅用于挂载数据卷的容器（无需运行服务）</span><br>docker run -it \<br>  -v /data:/shared-data \  <span class="hljs-comment"># 定义数据卷</span><br>  --name volume-container \  <span class="hljs-comment"># 命名数据卷容器</span><br>  ubuntu /bin/bash<br></code></pre></td></tr></table></figure>
+
+<h4 id="步骤-2：其他容器继承挂载配置"><a href="#步骤-2：其他容器继承挂载配置" class="headerlink" title="步骤 2：其他容器继承挂载配置"></a>步骤 2：其他容器继承挂载配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 容器A继承数据卷</span><br>docker run -it --volumes-from volume-container --name container-A ubuntu /bin/bash<br><br><span class="hljs-comment"># 容器B继承数据卷（与A共享同一数据卷）</span><br>docker run -it --volumes-from volume-container --name container-B ubuntu /bin/bash<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>效果</strong>：容器 A、B 与宿主机<code>/data</code>目录实时同步数据</li>
+</ul>
+<h3 id="4-3-注意事项"><a href="#4-3-注意事项" class="headerlink" title="4.3 注意事项"></a>4.3 注意事项</h3><ol>
+<li>数据卷容器停止 &#x2F; 删除后，其他容器仍可正常使用数据卷</li>
+<li>彻底清理数据卷需手动删除宿主机对应目录（如<code>/data</code>）</li>
+<li>可多层继承（容器 A 继承自数据卷容器，容器 B 继承自容器 A）</li>
 </ol>
-<p>ESM 是未来的趋势（浏览器和 Node.js 都在推广），但很多 Node.js 原生模块还依赖 CommonJS 的特性。了解这两种规范的区别，能帮你少踩很多 “导入报错” 的坑～</p>
+<h2 id="五、复习要点总结"><a href="#五、复习要点总结" class="headerlink" title="五、复习要点总结"></a>五、复习要点总结</h2><ol>
+<li><strong>核心目标</strong>：解决 “容器临时性” 与 “数据持久性” 的矛盾</li>
+<li><strong>基础命令</strong>：<code>-v</code>挂载、<code>docker inspect</code>查看、<code>--volumes-from</code>继承</li>
+<li><strong>关键区别</strong>：<ul>
+<li>普通挂载：直接指定宿主机路径（适合单容器）</li>
+<li>数据卷容器：通过中介容器管理（适合多容器共享）</li>
+</ul>
+</li>
+</ol>
 
                 
               </div>
@@ -483,8 +518,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B8%A9%E5%9D%91/" class="category-chain-item">技术踩坑</a>
+  <a href="/categories/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/" class="category-chain-item">容器技术</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/Docker/" class="category-chain-item">Docker</a>
+  
+  
+
   
 
       </span>
@@ -498,11 +540,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Electron/" class="print-no-link">#Electron</a>
+        <a href="/tags/Docker/" class="print-no-link">#Docker</a>
       
-        <a href="/tags/ESM/" class="print-no-link">#ESM</a>
-      
-        <a href="/tags/CommonJS/" class="print-no-link">#CommonJS</a>
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
       
     </div>
   
@@ -514,8 +554,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Electron中导入better-sqlite3：为什么import不行，require却可以？</div>
-      <div>https://hnugreycrow.github.io/2025/09/01/Electron中导入better-sqlite3/</div>
+      <div>Docker学习笔记(二)：容器数据卷</div>
+      <div>https://hnugreycrow.github.io/2025/08/14/b91f32b9d176/</div>
     </div>
     <div class="license-meta">
       
@@ -527,7 +567,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年9月1日</div>
+          <div>2025年8月14日</div>
         </div>
       
       
@@ -559,12 +599,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2025/08/14/c2a5f831d2a0/" title="Docker学习笔记(三)：部署MySQL">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker学习笔记(三)：部署MySQL</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/08/22/Vue3-%E9%80%8F%E4%BC%A0Attributes/" title="Vue3 笔记：透传 Attributes">
-                        <span class="hidden-mobile">Vue3 笔记：透传 Attributes</span>
+                      <a href="/2025/08/13/e37a265aefa7/" title="Docker学习笔记(一)：Docker常用命令">
+                        <span class="hidden-mobile">Docker学习笔记(一)：Docker常用命令</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -711,7 +757,7 @@
     <div class="footer-inner">
   
     <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
     </div>
   
   
