@@ -16,20 +16,20 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="HNUGreycrow">
+  <meta name="author" content="hnugreycrow">
   <meta name="keywords" content="">
   
     <meta name="description" content="在之前的服务器环境中，手动安装并配置MySQL的过程较为繁琐，因此我转而采用Docker容器化方案进行部署，通过标准化镜像和持久化存储机制，实现了更高效的数据库环境管理与版本控制。 这篇笔记就记录下用 Docker 部署 MySQL 的全过程，给自己留个存档。 一、准备工作1. 搜索MySQL镜像（可选）1docker search mysql  ❌问题：搜索出现超时，配置了国内镜像源也没用 2.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker学习笔记(三)：部署MySQL">
 <meta property="og:url" content="https://hnugreycrow.github.io/2025/08/14/c2a5f831d2a0/index.html">
-<meta property="og:site_name" content="HNUGreycrow Blog">
+<meta property="og:site_name" content="hnugreycrow&#39;s blog">
 <meta property="og:description" content="在之前的服务器环境中，手动安装并配置MySQL的过程较为繁琐，因此我转而采用Docker容器化方案进行部署，通过标准化镜像和持久化存储机制，实现了更高效的数据库环境管理与版本控制。 这篇笔记就记录下用 Docker 部署 MySQL 的全过程，给自己留个存档。 一、准备工作1. 搜索MySQL镜像（可选）1docker search mysql  ❌问题：搜索出现超时，配置了国内镜像源也没用 2.">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hnugreycrow.github.io/img/posts/docker.png">
 <meta property="article:published_time" content="2025-08-14T12:28:32.000Z">
 <meta property="article:modified_time" content="2025-08-18T06:00:00.000Z">
-<meta property="article:author" content="HNUGreycrow">
+<meta property="article:author" content="hnugreycrow">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="学习笔记">
 <meta name="twitter:card" content="summary_large_image">
@@ -37,7 +37,7 @@
   
   
   
-  <title>Docker学习笔记(三)：部署MySQL - HNUGreycrow Blog</title>
+  <title>Docker学习笔记(三)：部署MySQL - hnugreycrow&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -127,7 +127,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>HNUGreycrow Blog</strong>
+      <strong>hnugreycrow blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -574,7 +574,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>HNUGreycrow</div>
+          <div>hnugreycrow</div>
         </div>
       
       
@@ -641,7 +641,7 @@
     <div id="giscus" class="giscus"></div>
     <script type="text/javascript">
       Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"HNUGreycrow/HNUGreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var options = {"repo":"hnugreycrow/hnugreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
         var attributes = {};
         for (let option in options) {
           if (!option.startsWith('theme-')) {

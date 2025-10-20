@@ -16,20 +16,20 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="HNUGreycrow">
+  <meta name="author" content="hnugreycrow">
   <meta name="keywords" content="">
   
     <meta name="description" content="最近翻 Vue3 文档，重新过了一遍响应式的基础内容。之前用的时候总有些细节记不清，比如 ref 和 reactive 到底该怎么选、为什么有时候改了数据页面不更，这次特意整理了笔记（过程中也借助了大模型辅助梳理逻辑、补充细节😉），主要是给自己后续查着方便，内容以复习要点为主，可能有理解不到位的地方，先记下来慢慢修正。 官方文档：响应式基础 | Vue.js (vuejs.org) 一. 声明响">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue3 笔记：响应式基础">
 <meta property="og:url" content="https://hnugreycrow.github.io/2025/08/16/7d7a56076d74/index.html">
-<meta property="og:site_name" content="HNUGreycrow Blog">
+<meta property="og:site_name" content="hnugreycrow&#39;s blog">
 <meta property="og:description" content="最近翻 Vue3 文档，重新过了一遍响应式的基础内容。之前用的时候总有些细节记不清，比如 ref 和 reactive 到底该怎么选、为什么有时候改了数据页面不更，这次特意整理了笔记（过程中也借助了大模型辅助梳理逻辑、补充细节😉），主要是给自己后续查着方便，内容以复习要点为主，可能有理解不到位的地方，先记下来慢慢修正。 官方文档：响应式基础 | Vue.js (vuejs.org) 一. 声明响">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hnugreycrow.github.io/img/posts/vue.png">
 <meta property="article:published_time" content="2025-08-16T13:15:26.000Z">
 <meta property="article:modified_time" content="2025-08-18T00:00:00.000Z">
-<meta property="article:author" content="HNUGreycrow">
+<meta property="article:author" content="hnugreycrow">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary_large_image">
@@ -37,7 +37,7 @@
   
   
   
-  <title>Vue3 笔记：响应式基础 - HNUGreycrow Blog</title>
+  <title>Vue3 笔记：响应式基础 - hnugreycrow&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -127,7 +127,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>HNUGreycrow Blog</strong>
+      <strong>hnugreycrow blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -532,7 +532,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>HNUGreycrow</div>
+          <div>hnugreycrow</div>
         </div>
       
       
@@ -599,7 +599,7 @@
     <div id="giscus" class="giscus"></div>
     <script type="text/javascript">
       Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"HNUGreycrow/HNUGreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var options = {"repo":"hnugreycrow/hnugreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
         var attributes = {};
         for (let option in options) {
           if (!option.startsWith('theme-')) {

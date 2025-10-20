@@ -16,20 +16,20 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="HNUGreycrow">
+  <meta name="author" content="hnugreycrow">
   <meta name="keywords" content="">
   
     <meta name="description" content="在Electron开发过程中，我遇到一个有趣的问题：使用import Database from &quot;better-sqlite3&quot;导入模块时，不仅出现类型声明文件缺失的警告，还会报__filename is not defined的运行时错误。而换成const Database &#x3D; require(&quot;better-sqlite3&quot;)后，一切正常。这个现象背后">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Electron中导入better-sqlite3：为什么import不行，require却可以？">
 <meta property="og:url" content="https://hnugreycrow.github.io/2025/09/01/50951d80d876/index.html">
-<meta property="og:site_name" content="HNUGreycrow Blog">
+<meta property="og:site_name" content="hnugreycrow&#39;s blog">
 <meta property="og:description" content="在Electron开发过程中，我遇到一个有趣的问题：使用import Database from &quot;better-sqlite3&quot;导入模块时，不仅出现类型声明文件缺失的警告，还会报__filename is not defined的运行时错误。而换成const Database &#x3D; require(&quot;better-sqlite3&quot;)后，一切正常。这个现象背后">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hnugreycrow.github.io/img/posts/problem.png">
 <meta property="article:published_time" content="2025-09-01T14:42:46.000Z">
 <meta property="article:modified_time" content="2025-09-01T12:00:00.000Z">
-<meta property="article:author" content="HNUGreycrow">
+<meta property="article:author" content="hnugreycrow">
 <meta property="article:tag" content="Electron">
 <meta property="article:tag" content="ESM">
 <meta property="article:tag" content="CommonJS">
@@ -38,7 +38,7 @@
   
   
   
-  <title>Electron中导入better-sqlite3：为什么import不行，require却可以？ - HNUGreycrow Blog</title>
+  <title>Electron中导入better-sqlite3：为什么import不行，require却可以？ - hnugreycrow&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -128,7 +128,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>HNUGreycrow Blog</strong>
+      <strong>hnugreycrow blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -521,7 +521,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>HNUGreycrow</div>
+          <div>hnugreycrow</div>
         </div>
       
       
@@ -582,7 +582,7 @@
     <div id="giscus" class="giscus"></div>
     <script type="text/javascript">
       Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"HNUGreycrow/HNUGreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var options = {"repo":"hnugreycrow/hnugreycrow.github.io","repo-id":"R_kgDOPbHVIA","category":"Announcements","category-id":"DIC_kwDOPbHVIM4CuAGz","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
         var attributes = {};
         for (let option in options) {
           if (!option.startsWith('theme-')) {
